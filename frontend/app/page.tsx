@@ -2,7 +2,7 @@
 "use client"; // tells Next.js that the file is a Client Component, 
               // allowing to use interactive react features like useState
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // the expected structure of a video object
 type Video = {
   id: number;
@@ -11,36 +11,40 @@ type Video = {
   description: string;
 };
 
-const videos: Video[] = [
-  {
-    id: 1,
-    title: "How to File a 1099",
-    category: "1099s",
-    description: "Learn how to file your 1099 forms.",
-  },
-  {
-    id: 2,
-    title: "Understanding W-2 Forms",
-    category: "W-2",
-    description: "A beginner's guide to W-2 forms.",
-  },
-  {
-    id: 3,
-    title: "Getting Started with Tax Filing",
-    category: "Getting Started",
-    description: "Everything you need to get started.",
-  },
-  {
-    id: 4,
-    title: "Important Tax Deadlines",
-    category: "Deadlines",
-    description: "Learn about important filing dates.",
-  },
-];
+
 
 export default function Home() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Videos");
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function fetchVideos() {
+      try {
+        // sends http GET request from browser to Express backend
+        const response = await fetch(
+          "http://localhost:3001/api/videos"
+        );
+  
+        if (!response.ok) {
+          throw new Error("Failed to fetch videos");
+        }
+        // reads the JSON response and converts it into JavaScript data
+        const data: Video[] = await response.json();
+        // updates React state
+        setVideos(data);
+      } catch (err) {
+        setError("Unable to load videos. Please try again.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+  
+    fetchVideos();
+  }, []);
 
   const categories = [
     "All Videos",
@@ -104,6 +108,18 @@ export default function Home() {
           ))}
         </div>
 
+        {loading && (
+          <p className="mb-6 text-gray-500">
+          Loading videos...
+          </p>
+        )}
+
+        {error && (
+          <p className="mb-6 text-red-600">
+          {error}
+          </p>
+        )}
+
         <div className="grid gap-6 md:grid-cols-2">
           {filteredVideos.map((video) => (
             <div
@@ -125,7 +141,7 @@ export default function Home() {
           ))}
         </div>
 
-        {filteredVideos.length === 0 && (
+        {!loading && !error && filteredVideos.length === 0 && (
           <p className="mt-6 text-gray-500">
             No matching videos found.
           </p>

@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 const videos = [
     {
       id: 1,
-      title: "How to File a 1099",
+      title: "How to File a 1099 - Updated",
       category: "1099s",
       description: "Learn how to file your 1099 forms."
     },
