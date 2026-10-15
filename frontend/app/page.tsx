@@ -71,7 +71,7 @@ export default function Home() {
       <header className="bg-blue-950 px-8 py-10 text-white">
         <div className="mx-auto max-w-5xl">
           <h1 className="text-3xl font-bold">
-            TaxBandits Learning Center
+            TaxB Learning Center
           </h1>
           <p className="mt-2 text-blue-100">
             Simple tutorials for smarter tax filing.
