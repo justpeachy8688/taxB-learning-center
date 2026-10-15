@@ -188,3 +188,6 @@ Embedded tutorial videos remain the property of their respective creators and ar
 ## Project Status
 
 Functional local prototype with a Next.js frontend, Express REST API, PostgreSQL database, searchable video library, category filters, and embedded tutorials.
+
+### Project by:
+Taylor Sanders
