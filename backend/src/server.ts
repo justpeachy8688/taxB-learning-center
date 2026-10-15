@@ -48,7 +48,7 @@ const videos = [
   app.get("/api/videos", async (req, res) => {
     try { // if db fails, server returns 500 error 
       const result = await pool.query( // sends query to psql
-        "SELECT id, title, category, description FROM videos ORDER BY id"
+        "SELECT id, title, category, description, video_url FROM videos ORDER BY id"
       );
   
       res.json(result.rows); //psql returns matching records in an array called rows > Express converts array to JSON for React frontend
